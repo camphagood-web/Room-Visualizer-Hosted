@@ -16,7 +16,7 @@ services:
   # Frontend Service
   - type: web
     name: floor-visualizer-client
-    env: static
+    runtime: static
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
     envVars:
@@ -26,4 +26,3 @@ services:
           name: floor-visualizer-server
           envVarKey: RENDER_EXTERNAL_URL
     autoDeploy: true
-    plan: free
