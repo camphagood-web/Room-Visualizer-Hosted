@@ -2,7 +2,7 @@ services:
   # Backend Service
   - type: web
     name: floor-visualizer-server
-    env: python
+    runtime: python
     buildCommand: pip install -r requirements.txt
     startCommand: python main.py
     envVars:
