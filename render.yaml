@@ -3,22 +3,23 @@ services:
   - type: web
     name: floor-visualizer-server
     runtime: python
+    rootDir: server
     buildCommand: pip install -r requirements.txt
-    startCommand: python main.py
+    startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
       - key: NANO_BANANA_API_KEY
-        sync: false # User needs to input this in dashboard
+        sync: false
     autoDeploy: true
-    plan: free
 
   # Frontend Service
   - type: web
     name: floor-visualizer-client
     runtime: static
+    rootDir: client
     buildCommand: npm install && npm run build
-    staticPublishPath: ./dist
+    staticPublishPath: ./client/dist
     envVars:
       - key: VITE_API_URL
         fromService:
