@@ -14,7 +14,7 @@ services:
     plan: free
 
   # Frontend Service
-  - type: static
+  - type: web
     name: floor-visualizer-client
     env: static
     buildCommand: npm install && npm run build
