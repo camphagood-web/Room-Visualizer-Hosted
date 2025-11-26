@@ -1,0 +1,23 @@
+V1:
+
+Create a professional, realistic interior visualization. Take the flooring pattern from the second image (the floor sample) and seamlessly apply it to replace the entire floor in the first image (the room photo). The new flooring should be laid in the same direction and orientation as the original floor and look natural with proper perspective, lighting, and shadows that match the room's environment. Maintain the exact same room layout, rugs, furniture, walls, and all other elements - only change the floor to match the flooring sample. Do not add or remove any furniture, rugs, chairs, light fixtures, or any other room elements. Do not include any watermarks from input images in the output image.
+
+V2: 
+
+Action: Inpaint
+Input:
+  Target: Image_1
+  Sample: Image_2
+Mapping:
+  UV: Perspective_Correct
+  Logic:
+    If_Directional: Align_Axis
+    If_Uniform: Seamless
+Physics:
+  Lighting: Match_Target_Env
+  Properties: [Specular|Roughness|Transport]
+  Shadows: Deep_Ambient_Occlusion
+Constraints:
+  Preserve: [Furniture|Rugs|Walls|Decor]
+  Block: [Watermarks|Artifacts]
+  Style: Photorealistic
