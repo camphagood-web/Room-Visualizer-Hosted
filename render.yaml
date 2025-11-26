@@ -24,6 +24,6 @@ services:
         fromService:
           type: web
           name: floor-visualizer-server
-          property: url
+          envVarKey: RENDER_EXTERNAL_URL
     autoDeploy: true
     plan: free
