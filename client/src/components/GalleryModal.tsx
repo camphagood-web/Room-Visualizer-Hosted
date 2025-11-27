@@ -167,7 +167,7 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
             </div>
 
             {/* Main Content */}
-            <div className="relative w-full h-full flex items-center justify-center p-4 md:p-12">
+            <div className="relative w-full h-full flex items-center justify-center px-4 md:px-12 pb-4 md:pb-12 pt-24">
                 {/* Navigation Buttons */}
                 <button
                     onClick={handlePrevious}

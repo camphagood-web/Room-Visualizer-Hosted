@@ -1,5 +1,5 @@
 import React, { useRef, useState, useMemo } from 'react';
-import { Upload, Loader2, AlertCircle, Filter, Heart, Download, SplitSquareHorizontal, X, Image as ImageIcon } from 'lucide-react';
+import { Upload, Loader2, AlertCircle, Filter, Heart, Download, SplitSquareHorizontal, X, Image as ImageIcon, RefreshCw } from 'lucide-react';
 import { useFlooring } from '../context/FlooringContext';
 import { useProductData } from '../hooks/useProductData';
 import { BeforeAfterSlider } from '../components/BeforeAfterSlider';
@@ -175,6 +175,24 @@ export const Visualizer = () => {
         }
     };
 
+    const handleRegenerate = async () => {
+        if (!uploadedImage || !selectedProduct) return;
+
+        setIsGenerating(true);
+        setError(null);
+        try {
+            // Force generation by calling API directly, bypassing cache check
+            const resultImage = await generateFloor(uploadedImage, selectedProduct);
+            setGeneratedImage(resultImage);
+            // Overwrite existing cache
+            cacheImage(selectedProduct.SKUNumber, resultImage);
+        } catch (err) {
+            setError('Failed to regenerate visualization. Please try again.');
+        } finally {
+            setIsGenerating(false);
+        }
+    };
+
     return (
         <div className="min-h-screen bg-surface flex flex-col h-screen">
             {/* Header */}
@@ -191,6 +209,17 @@ export const Visualizer = () => {
                             <Upload size={16} />
                             Upload
                         </button>
+
+                        {generatedImage && (
+                            <button
+                                onClick={handleRegenerate}
+                                disabled={isGenerating}
+                                className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 hover:bg-gray-200 hover:text-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                                title="Regenerate Floor"
+                            >
+                                <RefreshCw size={16} className={isGenerating ? 'animate-spin' : ''} />
+                            </button>
+                        )}
 
                         {generatedImage && (
                             <>
@@ -253,9 +282,9 @@ export const Visualizer = () => {
                 {/* Sidebar / Product Grid */}
                 <aside className="w-full md:w-1/3 lg:w-1/4 bg-white border-r border-border flex flex-col z-10 h-1/2 md:h-full">
                     <div className="p-4 border-b border-border space-y-4">
-                        <div>
-                            <h2 className="font-heading text-lg font-semibold">Select Flooring</h2>
-                            <p className="text-sm text-text-muted">Choose a product to visualize</p>
+                        <div className="mb-6 text-center">
+                            <h2 className="font-heading text-3xl font-bold text-text-heading mb-2">Select Flooring</h2>
+                            <p className="text-base text-text-muted">Choose a product to visualize</p>
                         </div>
 
                         {/* Filter Button */}
@@ -297,11 +326,11 @@ export const Visualizer = () => {
                         </div>
                     ) : (
                         <div className="flex-1 overflow-y-auto p-4">
-                            <div className="grid grid-cols-1 gap-6">
+                            <div className="grid grid-cols-1 gap-3">
                                 {filteredProducts.map((product, idx) => (
                                     <div
                                         key={idx}
-                                        className={`transform scale-90 origin-top-left w-full transition-all duration-200 rounded-xl ${selectedProduct?.ProductName === product.ProductName ? 'ring-4 ring-secondary ring-offset-2' : ''}`}
+                                        className={`w-full transition-all duration-200 rounded-xl ${selectedProduct?.ProductName === product.ProductName ? 'ring-4 ring-secondary ring-offset-2' : ''}`}
                                     >
                                         <TiltCard
                                             product={product}

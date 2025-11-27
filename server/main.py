@@ -26,12 +26,15 @@ load_dotenv()
 app = FastAPI()
 
 # CORS Configuration
-origins = ["*"]
+origins = [
+    "http://localhost:5173",
+    os.getenv("FRONTEND_URL", ""), # Allow frontend URL from env
+]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_credentials=False,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -118,7 +121,7 @@ async def generate_floor(
         1. Identify the floor area in Input 1. accurately using perspective.
         2. Replace the material of the floor in Input 1 with the texture from Input 2.
         3. CRITICAL: Preserve all original lighting, shadows, and reflections from Input 1. The new wood must appear to be under the same lighting conditions.
-        4. CRITICAL: Do not cover, add, or alter any furniture, rug edges, baseboards, or decor items sitting on the floor. Mask them out perfectly.
+        4. CRITICAL: Do not cover, add, or alter any furniture, rugs rug edges, baseboards, or decor items sitting on the floor. Mask them out perfectly.
         5. CRITICAL: Do not alter or add any elements other than the floor within the image.
         6. If the sample is wood planks, orient the wood planks to flow with the room's main perspective lines (vanishing point).
         7. Ensure the wood grain scale or sample pattern matches the scale of the room.
