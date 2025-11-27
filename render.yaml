@@ -11,6 +11,11 @@ services:
         value: 3.11.0
       - key: NANO_BANANA_API_KEY
         sync: false
+      - key: FRONTEND_URL
+        fromService:
+          type: web
+          name: floor-visualizer-client
+          envVarKey: RENDER_EXTERNAL_URL
     autoDeploy: true
 
   # Frontend Service

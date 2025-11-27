@@ -28,8 +28,13 @@ app = FastAPI()
 # CORS Configuration
 origins = [
     "http://localhost:5173",
-    os.getenv("FRONTEND_URL", ""), # Allow frontend URL from env
+    os.getenv("FRONTEND_URL"), 
 ]
+
+# Filter out None or empty strings from origins
+origins = [origin for origin in origins if origin]
+
+print(f"[Server] Allowed CORS origins: {origins}")
 
 app.add_middleware(
     CORSMiddleware,
